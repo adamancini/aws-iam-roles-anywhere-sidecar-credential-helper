@@ -6,7 +6,7 @@ import (
 	"strconv"
 	"time"
 
-	awsconfig "github.com/replicated-collab/cerby-replicated/credential-helper/awsconfig"
+	awsconfig "github.com/adamancini/aws-iam-roles-anywhere-sidecar-credential-helper/awsconfig"
 )
 
 func main() {
