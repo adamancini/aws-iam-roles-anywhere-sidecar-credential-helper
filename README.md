@@ -18,6 +18,7 @@ This is a sidecar container used to inject AWS IAM credentials/config files into
 | AWS_DEFAULT_REGION | The AWS region to use for the credential helper | us-east-2 |
 | AWS_REFRESH_INTERVAL | The interval in seconds to refresh the credentials | 900 |
 | AWS_CONTAINER_CREDENTIALS_FULL_URI | The URI to use to obtain credentials | http://localhost:8080/creds |
+| LISTEN_PORT | The port to listen on for HTTP requests. | 3000 |
 
 ### Kubernetes
 
