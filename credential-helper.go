@@ -59,6 +59,12 @@ func main() {
 		}
 	}
 
+	err := update(credentialsURI)
+	if err != nil {
+		log.Println("Error updating credentials:", err)
+		os.Exit(1)
+	}
+
 	ticker := time.NewTicker(time.Duration(refreshInterval) * time.Second)
 
 	http.HandleFunc("/healthz", func(w http.ResponseWriter, r *http.Request) {
