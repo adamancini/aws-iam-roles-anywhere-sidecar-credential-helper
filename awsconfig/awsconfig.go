@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"log"
 	"net/http"
 	"os"
 	"os/user"
@@ -37,21 +38,21 @@ func getHomeDir() (string, error) {
 func GetCredentials(uri string) (*awsConfig, error) {
 	resp, err := http.Get(uri)
 	if err != nil {
-		fmt.Println("Error making HTTP request:", err)
+		log.Println("Error making HTTP request:", err)
 		return nil, err
 	}
 	defer resp.Body.Close()
 
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
-		fmt.Println("Error reading response body:", err)
+		log.Println("Error reading response body:", err)
 		return nil, err
 	}
 
 	var awsConfig awsConfig
 	err = json.Unmarshal(body, &awsConfig)
 	if err != nil {
-		fmt.Println("Error parsing JSON:", err)
+		log.Println("Error parsing JSON:", err)
 		return nil, err
 	}
 
@@ -102,6 +103,6 @@ func UpdateCredentialsFile(c *awsConfig) error {
 		return fmt.Errorf("Error renaming credentials file: %w", err)
 	}
 
-	fmt.Println("Updated aws config successfully")
+	log.Println("Updated aws config successfully")
 	return nil
 }

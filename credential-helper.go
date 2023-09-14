@@ -1,7 +1,7 @@
 package main
 
 import (
-	"fmt"
+	"log"
 	"os"
 	"strconv"
 	"time"
@@ -13,7 +13,7 @@ func main() {
 
 	credentialsURI := os.Getenv("AWS_CONTAINER_CREDENTIALS_FULL_URI")
 	if credentialsURI == "" {
-		fmt.Println("AWS_CONTAINER_CREDENTIALS_FULL_URI environment variable not set. defaulting to localhost:8080/creds")
+		log.Println("AWS_CONTAINER_CREDENTIALS_FULL_URI environment variable not set. defaulting to localhost:8080/creds")
 		credentialsURI = "http://localhost:8080/creds"
 	}
 
@@ -22,7 +22,7 @@ func main() {
 	if refreshIntervalStr != "" {
 		interval, err := strconv.Atoi(refreshIntervalStr)
 		if err != nil {
-			fmt.Println("Invalid AWS_REFRESH_INTERVAL:", err)
+			log.Println("Invalid AWS_REFRESH_INTERVAL:", err)
 			return
 		}
 		refreshInterval = interval
@@ -34,13 +34,13 @@ func main() {
 
 		c, err := awsconfig.GetCredentials(credentialsURI)
 		if err != nil {
-			fmt.Println("Error getting credentials:", err)
+			log.Println("Error getting credentials:", err)
 			return
 		}
 
 		err = awsconfig.UpdateCredentialsFile(c)
 		if err != nil {
-			fmt.Println("Error updating credentials file:", err)
+			log.Println("Error updating credentials file:", err)
 			return
 		}
 	}
@@ -51,7 +51,7 @@ func main() {
 	for {
 		select {
 		case <-refreshTimer.C:
-			fmt.Println("Refreshing credentials")
+			log.Println("Refreshing credentials")
 			update()
 			refreshTimer.Reset(time.Duration(refreshInterval) * time.Second)
 		}
