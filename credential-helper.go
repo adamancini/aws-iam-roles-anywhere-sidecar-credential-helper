@@ -2,6 +2,7 @@ package main
 
 import (
 	"log"
+	"net/http"
 	"os"
 	"strconv"
 	"time"
@@ -28,7 +29,7 @@ func main() {
 		refreshInterval = interval
 	}
 
-	refreshTimer := time.NewTimer(time.Duration(refreshInterval) * time.Second)
+	ticker := time.NewTicker(time.Duration(refreshInterval) * time.Second)
 
 	update := func() {
 
@@ -47,13 +48,21 @@ func main() {
 
 	update()
 
-	// kick off timer to refresh credentials
-	for {
-		select {
-		case <-refreshTimer.C:
-			log.Println("Refreshing credentials")
+	http.HandleFunc("/healthz", func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusOK)
+		w.Write([]byte("200 OK"))
+	})
+
+	go func() {
+		for range ticker.C {
 			update()
-			refreshTimer.Reset(time.Duration(refreshInterval) * time.Second)
 		}
-	}
+	}()
+
+	go func() {
+		log.Println("Listening on port 8080 for health checks")
+		http.ListenAndServe(":8080", nil)
+	}()
+
+	select {}
 }
