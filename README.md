@@ -79,6 +79,8 @@ spec:
           value: http://localhost:8080/creds
         - name: AWS_REFRESH_INTERVAL
           value: "300"
+        - name: LISTEN_PORT
+          value: 3000
         image: adamancini/aws-iam-roles-anywhere-sidecar-credential-helper:v1.0.1
         name: credential-helper
         volumeMounts:
