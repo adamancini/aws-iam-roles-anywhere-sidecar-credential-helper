@@ -81,7 +81,7 @@ spec:
           value: "300"
         - name: LISTEN_PORT
           value: 3000
-        image: adamancini/aws-iam-roles-anywhere-sidecar-credential-helper:v1.0.1
+        image: adamancini/aws-iam-roles-anywhere-sidecar-credential-helper:v1.0.4
         name: credential-helper
         volumeMounts:
         - mountPath: /root/.aws
