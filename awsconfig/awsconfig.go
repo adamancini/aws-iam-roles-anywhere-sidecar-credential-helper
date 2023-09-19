@@ -64,7 +64,7 @@ func (c *awsConfig) toCredentialsINI() string {
 }
 
 func (c *awsConfig) toConfigINI() string {
-	return fmt.Sprintf("[default]\nrole_arn = %s\nsource_profile = default\n", c.RoleArn)
+	return fmt.Sprintf("[default]\n")
 }
 
 // atomically update ~/.aws/credentials and ~/.aws/config
