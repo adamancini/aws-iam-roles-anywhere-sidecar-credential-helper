@@ -7,7 +7,7 @@ COPY . /go/src/github.com/adamancini/aws-iam-roles-anywhere-sidecar-credential-h
 RUN cd /go/src/github.com/adamancini/aws-iam-roles-anywhere-sidecar-credential-helper && \
   CGO_ENABLED=0 GOOS=linux go build -ldflags "-X main.version=$APP_VERSION" -a -installsuffix cgo -o credential-helper .
 
-ARG ALPINE_VERSION=3.18
+ARG ALPINE_VERSION=3.20
 ARG APP_VERSION="v0.0.0-unknown"
 FROM --platform=linux/amd64 alpine:${ALPINE_VERSION} as release
 ENV APP_VERSION=$APP_VERSION
