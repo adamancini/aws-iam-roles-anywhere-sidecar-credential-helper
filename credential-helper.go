@@ -8,12 +8,12 @@ import (
 	"strconv"
 	"time"
 
-	awsconfig "github.com/adamancini/aws-iam-roles-anywhere-sidecar-credential-helper/awsconfig"
+	awsconfig "github.com/cerbyinc/aws-iam-roles-anywhere-sidecar-credential-helper/awsconfig"
 )
 
 const defaultListenPort = ":3000"
 const defaultCredentialsURI = "http://localhost:8080/creds"
-const defaultRefreshInterval = 300 // 5 minutes
+const defaultRefreshInterval = 1500 // 15 minutes
 
 func update(uri string) error {
 	c, err := awsconfig.GetCredentials(uri)
