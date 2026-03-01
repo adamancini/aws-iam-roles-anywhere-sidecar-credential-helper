@@ -23,7 +23,7 @@ type awsConfig struct {
 	Token           string `json:"Token"`
 }
 
-func getHomeDir() (string, error) {
+var getHomeDir = func() (string, error) {
 	usr, err := user.Current()
 	if err == nil {
 		return usr.HomeDir, nil

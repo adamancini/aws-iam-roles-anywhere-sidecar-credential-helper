@@ -29,6 +29,18 @@ func update(uri string) error {
 	return nil
 }
 
+func parseRefreshInterval(s string) int {
+	if s == "" {
+		return defaultRefreshInterval
+	}
+	i, err := strconv.Atoi(s)
+	if err != nil {
+		log.Printf("Invalid AWS_REFRESH_INTERVAL environment variable. defaulting to %d", defaultRefreshInterval)
+		return defaultRefreshInterval
+	}
+	return i
+}
+
 func isValidPort(s string) bool {
 	pattern := regexp.MustCompile(`^:\d{1,5}$`)
 	return pattern.MatchString(s)
@@ -48,16 +60,7 @@ func main() {
 		credentialsURI = defaultCredentialsURI
 	}
 
-	refreshInterval := defaultRefreshInterval
-	refreshIntervalStr := os.Getenv("AWS_REFRESH_INTERVAL")
-	if refreshIntervalStr != "" {
-		i, err := strconv.Atoi(refreshIntervalStr)
-		if err != nil {
-			refreshInterval = i
-		} else {
-			log.Printf("Invalid AWS_REFRESH_INTERVAL environment variable. defaulting to %d", defaultRefreshInterval)
-		}
-	}
+	refreshInterval := parseRefreshInterval(os.Getenv("AWS_REFRESH_INTERVAL"))
 
 	err := update(credentialsURI)
 	if err != nil {
@@ -83,7 +86,6 @@ func main() {
 			if err != nil {
 				log.Println("Error updating credentials:", err)
 			}
-			os.Exit(1)
 		}
 	}()
 
