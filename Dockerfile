@@ -1,7 +1,10 @@
+# check=skip=SecretsUsedInArgOrEnv
 ARG GO_VERSION=1.21.1
 ARG ALPINE_VERSION=3.18
+ARG PLATFORM=linux/amd64
 ARG APP_VERSION="v0.0.0-unknown"
-FROM --platform=linux/amd64 golang:${GO_VERSION}-alpine${ALPINE_VERSION} as build
+FROM --platform=${PLATFORM} golang:${GO_VERSION}-alpine${ALPINE_VERSION} AS build
+ARG APP_VERSION
 
 COPY . /go/src/github.com/adamancini/aws-iam-roles-anywhere-sidecar-credential-helper
 RUN cd /go/src/github.com/adamancini/aws-iam-roles-anywhere-sidecar-credential-helper && \
@@ -9,7 +12,8 @@ RUN cd /go/src/github.com/adamancini/aws-iam-roles-anywhere-sidecar-credential-h
 
 ARG ALPINE_VERSION=3.23
 ARG APP_VERSION="v0.0.0-unknown"
-FROM --platform=linux/amd64 alpine:${ALPINE_VERSION} as release
+FROM --platform=${PLATFORM} alpine:${ALPINE_VERSION} AS release
+ARG APP_VERSION
 ENV APP_VERSION=$APP_VERSION
 ENV AWS_REGION=us-east-2
 ENV AWS_DEFAULT_REGION=us-east-2
@@ -25,4 +29,3 @@ COPY --from=build /go/src/github.com/adamancini/aws-iam-roles-anywhere-sidecar-c
 RUN chmod +x /usr/local/bin/credential-helper
 
 ENTRYPOINT [ "/usr/local/bin/credential-helper" ]
-
